@@ -1,0 +1,81 @@
+Function CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(ByRef SETOR As String, PLAN As String) As Integer
+
+Dim NOVOS_GRAFICOS As Worksheet
+Dim MOVIMENTACAO As Worksheet
+Dim ARRECADACAO As Worksheet
+
+Set NOVOS_GRAFICOS = Sheets("NOVOS_GRAFICOS")
+Set MOVIMENTACAO = Sheets("MOVIMENTAÇÃO")
+Set ARRECADACAO = Sheets("ARRECADAÇÃO")
+
+Dim Matriz_SETORES(7, 2)
+
+Dim cont_LINHA As Integer
+cont_LINHA = 1
+
+Matriz_SETORES(0, 0) = "INTERNAÇÃO"
+Matriz_SETORES(1, 0) = "CARGA NACIONAL"
+Matriz_SETORES(2, 0) = "EXPORTAÇÃO"
+Matriz_SETORES(3, 0) = "IMPORTAÇÃO"
+Matriz_SETORES(4, 0) = "SERVIÇOS"
+Matriz_SETORES(5, 0) = "CONCESSÃO CARGA NACIONAL"
+Matriz_SETORES(6, 0) = "CONCESSÃO ÁREA TECA"
+
+Matriz_SETORES(0, 1) = "MOVIMENTAÇÃO"
+Matriz_SETORES(1, 1) = "ARRECADAÇÃO"
+
+
+Dim lin1 As Integer
+Dim lin2 As Integer
+
+For lin2 = 0 To 1
+
+    For lin1 = 0 To 6
+
+            If SETOR = Matriz_SETORES(lin1, 0) And PLAN = Matriz_SETORES(lin2, 1) Then
+            
+                    If Matriz_SETORES(lin2, 1) = "MOVIMENTAÇÃO" And PLAN = "MOVIMENTAÇÃO" Then
+                    
+                        MOVIMENTACAO.Select
+                        Range("A1").Select
+                    
+                    Else
+                    
+                        ARRECADACAO.Select
+                        Range("A1").Select
+                    
+                    End If
+            
+            
+            
+                    Do Until ActiveCell.Value = Matriz_SETORES(lin1, 0)
+            
+                            cont_LINHA = cont_LINHA + 1
+            
+                            ActiveCell.Offset(1, 0).Select
+            
+            
+                    Loop
+            
+                    Do Until ActiveCell.Value = "TOTAL"
+            
+                            cont_LINHA = cont_LINHA + 1
+            
+                            ActiveCell.Offset(1, 0).Select
+            
+            
+                    Loop
+            
+                    CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO = cont_LINHA
+            
+                    Exit Function
+            
+                End If
+
+
+    Next lin1
+
+Next lin2
+
+
+End Function
