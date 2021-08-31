@@ -1,0 +1,181 @@
+Option Explicit
+
+
+Sub resumo_movimentação_arrecadacao()
+
+Application.ScreenUpdating = False
+Application.Calculation = xlCalculationManual
+Application.EnableEvents = False
+
+Dim NOVOS_GRAFICOS As Worksheet
+Dim MOVIMENTACAO As Worksheet
+Dim ARRECADACAO As Worksheet
+ 
+Dim Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(7, 2) As Integer
+Dim Matriz_Ano_Movimentacao_Arrecadacao(2, 2) As Integer
+Dim Vetor_Anos_1_2(2, 2) As String
+Dim VETOR_SETORES(7) As String
+Dim Matriz_RESUMO(7, 4) As Double
+
+Set NOVOS_GRAFICOS = Sheets("NOVOS_GRAFICOS")
+Set MOVIMENTACAO = Sheets("MOVIMENTAÇÃO")
+Set ARRECADACAO = Sheets("ARRECADAÇÃO")
+
+Vetor_Anos_1_2(0, 0) = "ANO_INI"
+Vetor_Anos_1_2(1, 0) = "ANO_FIM"
+Vetor_Anos_1_2(0, 1) = "MOVIMENTAÇÃO"
+Vetor_Anos_1_2(1, 1) = "ARRECADAÇÃO"
+
+VETOR_SETORES(0) = "INTERNAÇÃO"
+VETOR_SETORES(1) = "CARGA NACIONAL"
+VETOR_SETORES(2) = "EXPORTAÇÃO"
+VETOR_SETORES(3) = "IMPORTAÇÃO"
+VETOR_SETORES(4) = "SERVIÇOS"
+VETOR_SETORES(5) = "CONCESSÃO CARGA NACIONAL"
+VETOR_SETORES(6) = "CONCESSÃO ÁREA TECA"
+
+
+Matriz_Ano_Movimentacao_Arrecadacao(0, 0) = CONTAR_COLUNA_ANO(Vetor_Anos_1_2(0, 0), Vetor_Anos_1_2(0, 1))    ' ANO INICIO - MOVIMENTACAO
+        
+        Matriz_Ano_Movimentacao_Arrecadacao(1, 0) = CONTAR_COLUNA_ANO(Vetor_Anos_1_2(1, 0), Vetor_Anos_1_2(0, 1))    ' ANO FIM - MOVIMENTACAO
+
+Matriz_Ano_Movimentacao_Arrecadacao(0, 1) = CONTAR_COLUNA_ANO(Vetor_Anos_1_2(0, 0), Vetor_Anos_1_2(1, 1))    ' ANO INICIO - ARRECADACAO
+
+        Matriz_Ano_Movimentacao_Arrecadacao(1, 1) = CONTAR_COLUNA_ANO(Vetor_Anos_1_2(1, 0), Vetor_Anos_1_2(1, 1))    ' ANO FIM - ARRECADACAO
+
+
+Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 0) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(0), Vetor_Anos_1_2(0, 1)) 'Linha Internação movimentação
+
+    Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 0) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(1), Vetor_Anos_1_2(0, 1)) 'Linha Carga Nacional movimentação
+
+        Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 0) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(2), Vetor_Anos_1_2(0, 1)) 'Linha Exportação movimentação
+
+            Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 0) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(3), Vetor_Anos_1_2(0, 1)) 'Linha importação movimentação
+
+                Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(0), Vetor_Anos_1_2(1, 1)) 'Linha internação arrecadação
+
+                    Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(1), Vetor_Anos_1_2(1, 1)) 'Linha carga nacional arrecadação
+
+                        Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(2), Vetor_Anos_1_2(1, 1)) 'Linha exportação arrecadação
+
+                            Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(3), Vetor_Anos_1_2(1, 1)) 'Linha Importação arrecadação
+
+                                Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(4, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(4), Vetor_Anos_1_2(1, 1)) 'Linha serviços arrecadação
+
+                                    Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(5, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(5), Vetor_Anos_1_2(1, 1)) 'Linha Concessão carga nacional arrecadação
+
+                                        triz_LINHA_MOVIMENTACAO_ARRECADACAO(6, 1) = CONTAR_LINHA_MOVIMENTACAO_ARRECADACAO(VETOR_SETORES(6), Vetor_Anos_1_2(1, 1)) 'Linha concessão área teca arrecadação
+
+
+
+Matriz_RESUMO(0, 0) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 0), Matriz_Ano_Movimentacao_Arrecadacao(0, 0)) 'INTERNAÇÃO - ANO INICIAL - MOVIMENTAÇÃO
+
+    Matriz_RESUMO(1, 0) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 0), Matriz_Ano_Movimentacao_Arrecadacao(0, 0)) 'CARGA NACIONAL - ANO INICIAL - MOVIMENTAÇÃO
+
+        Matriz_RESUMO(2, 0) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 0), Matriz_Ano_Movimentacao_Arrecadacao(0, 0)) 'EXPORTAÇÃO - ANO INICIAL - MOVIMENTAÇÃO
+
+            Matriz_RESUMO(3, 0) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 0), Matriz_Ano_Movimentacao_Arrecadacao(0, 0)) 'IMPORTAÇÃO - ANO INCIAL - MOVIMENTAÇÃO
+
+                Matriz_RESUMO(0, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'INTERNAÇÃO - ANO INICIAL - ARRECADAÇÃO
+
+                    Matriz_RESUMO(1, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'CARGA NACIONAL - ANO INICIAL - ARRECADAÇÃO
+
+                        Matriz_RESUMO(2, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'EXPORTAÇÃO - ANO INICIAL - ARRECADAÇÃO
+
+                            Matriz_RESUMO(3, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'IMPORTAÇÃO - ANO INICIAL - ARRECADAÇÃO
+
+                                Matriz_RESUMO(4, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(4, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'SERVIÇOS - ANO INICIAL - ARRECADAÇÃO
+
+                                    Matriz_RESUMO(5, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(5, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'CONCESSÃO CARGA NACIONAL - ANO INICIAL - ARRECADAÇÃO
+
+                                        Matriz_RESUMO(6, 1) = MOVIMENTACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(6, 1), Matriz_Ano_Movimentacao_Arrecadacao(0, 1)) 'CONCESSÃO ÁREA TECA - ANO INICIAL - ARRECADAÇÃO
+
+                                            Matriz_RESUMO(0, 2) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 0), Matriz_Ano_Movimentacao_Arrecadacao(1, 0)) 'INTERNAÇÃO - ANO FINAL - MOVIMENTAÇÃO
+
+                                                Matriz_RESUMO(1, 2) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 0), Matriz_Ano_Movimentacao_Arrecadacao(1, 0)) 'CARGA NACIONAL - ANO FINAL - MOVIMENTAÇÃO
+
+                                                    Matriz_RESUMO(2, 2) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 0), Matriz_Ano_Movimentacao_Arrecadacao(1, 0)) 'EXPORTAÇÃO - ANO FINAL - MOVIMENTAÇÃO
+
+                                                        Matriz_RESUMO(3, 2) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 0), Matriz_Ano_Movimentacao_Arrecadacao(1, 0)) 'IMPORTAÇÃO - ANO FINAL - MOVIMENTAÇÃO
+
+                                                            Matriz_RESUMO(0, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(0, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'INTERNAÇÃO - ANO FINAL - ARRECADAÇÃO
+
+                                                                Matriz_RESUMO(1, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(1, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'CARGA NACIONAL - ANO FINAL - ARRECADAÇÃO
+
+                                                                    Matriz_RESUMO(2, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(2, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'EXPORTAÇÃO - ANO FINAL - ARRECADAÇÃO
+
+                                                                        Matriz_RESUMO(3, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(3, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'IMPORTAÇÃO - ANO FINAL - ARRECADAÇÃO
+
+                                                                            Matriz_RESUMO(4, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(4, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'SERVIÇOS - ANO FINAL - ARRECADAÇÃO
+
+                                                                                Matriz_RESUMO(5, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(5, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'CONCESSÃO CARGA NACIONAL - ANO FINAL - ARRECADAÇÃO
+
+                                                                                    Matriz_RESUMO(6, 3) = ARRECADACAO.Cells(Matriz_LINHA_MOVIMENTACAO_ARRECADACAO(6, 1), Matriz_Ano_Movimentacao_Arrecadacao(1, 1)) 'CONCESSÃO ÁREA TECA - ANO FINAL - ARRECADAÇÃO
+
+
+NOVOS_GRAFICOS.Select
+Range("A1").Select
+
+Do Until ActiveCell.Value = "Internação"
+
+    ActiveCell.Offset(1, 0).Select
+
+Loop
+
+
+            ActiveCell.Offset(0, 1).Value = Matriz_RESUMO(0, 0)
+            
+                ActiveCell.Offset(1, 1).Value = Matriz_RESUMO(1, 0)
+                
+                    ActiveCell.Offset(2, 1).Value = Matriz_RESUMO(2, 0)
+                    
+                        ActiveCell.Offset(3, 1).Value = Matriz_RESUMO(3, 0)
+                        
+                            ActiveCell.Offset(7, 1).Value = Matriz_RESUMO(0, 1)
+                            
+                                ActiveCell.Offset(8, 1).Value = Matriz_RESUMO(1, 1)
+                                
+                                    ActiveCell.Offset(9, 1).Value = Matriz_RESUMO(2, 1)
+                                    
+                                        ActiveCell.Offset(10, 1).Value = Matriz_RESUMO(3, 1)
+                                        
+                                            ActiveCell.Offset(11, 1).Value = Matriz_RESUMO(4, 1)
+                                            
+                                                ActiveCell.Offset(12, 1).Value = Matriz_RESUMO(5, 1)
+                                                
+                                                    ActiveCell.Offset(13, 1).Value = Matriz_RESUMO(6, 1)
+            
+            ActiveCell.Offset(0, 3).Value = Matriz_RESUMO(0, 2)
+            
+                ActiveCell.Offset(1, 3).Value = Matriz_RESUMO(1, 2)
+                    
+                    ActiveCell.Offset(2, 3).Value = Matriz_RESUMO(2, 2)
+                        
+                        ActiveCell.Offset(3, 3).Value = Matriz_RESUMO(3, 2)
+                            
+                            ActiveCell.Offset(7, 3).Value = Matriz_RESUMO(0, 3)
+                                
+                                ActiveCell.Offset(8, 3).Value = Matriz_RESUMO(1, 3)
+                                    
+                                    ActiveCell.Offset(9, 3).Value = Matriz_RESUMO(2, 3)
+                                        
+                                        ActiveCell.Offset(10, 3).Value = Matriz_RESUMO(3, 3)
+                                            
+                                            ActiveCell.Offset(11, 3).Value = Matriz_RESUMO(4, 3)
+                                                
+                                                ActiveCell.Offset(12, 3).Value = Matriz_RESUMO(5, 3)
+                                                    
+                                                    ActiveCell.Offset(13, 3).Value = Matriz_RESUMO(6, 3)
+            
+            
+            
+
+Range("A1").Select
+
+
+Application.ScreenUpdating = True
+Application.Calculation = xlCalculationAutomatic
+Application.EnableEvents = True
+
+
+End Sub
