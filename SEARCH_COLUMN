@@ -1,0 +1,94 @@
+Function CONTAR_COLUNA_ANO(ByRef ANO As String, PLAN As String) As Integer
+
+Dim NOVOS_GRAFICOS As Worksheet
+Dim MOVIMENTACAO As Worksheet
+Dim ARRECADACAO As Worksheet
+
+Set NOVOS_GRAFICOS = Sheets("NOVOS_GRAFICOS")
+Set MOVIMENTACAO = Sheets("MOVIMENTAÇÃO")
+Set ARRECADACAO = Sheets("ARRECADAÇÃO")
+
+Dim cont_COLUNA As Integer
+cont_COLUNA = 1
+        
+    
+    If PLAN = "MOVIMENTAÇÃO" Then
+    
+        MOVIMENTACAO.Select
+        Range("A1").Select
+    
+    ElseIf PLAN = "ARRECADAÇÃO" Then
+    
+        ARRECADACAO.Select
+        Range("A1").Select
+        
+    End If
+        
+
+
+            Do Until ActiveCell.Value = "TOTAL"
+                
+                    ActiveCell.Offset(1, 0).Select
+                
+            Loop
+
+    If ANO = "ANO_INI" And PLAN = "MOVIMENTAÇÃO" Then
+
+            Do Until ActiveCell.Offset(-13, 0).Value = NOVOS_GRAFICOS.Range("M2").Value
+            
+                    cont_COLUNA = cont_COLUNA + 1
+                
+                    ActiveCell.Offset(0, 1).Select
+                    
+                       
+            Loop
+            
+            CONTAR_COLUNA_ANO = cont_COLUNA
+            
+    
+    ElseIf ANO = "ANO_FIM" And PLAN = "MOVIMENTAÇÃO" Then
+    
+            Do Until ActiveCell.Offset(-13, 0).Value = NOVOS_GRAFICOS.Range("O2").Value
+            
+                    cont_COLUNA = cont_COLUNA + 1
+                
+                    ActiveCell.Offset(0, 1).Select
+                    
+                       
+            Loop
+            
+            CONTAR_COLUNA_ANO = cont_COLUNA
+            
+            
+    ElseIf ANO = "ANO_INI" And PLAN = "ARRECADAÇÃO" Then
+            
+            Do Until ActiveCell.Offset(-13, 0).Value = NOVOS_GRAFICOS.Range("O2").Value
+            
+                    cont_COLUNA = cont_COLUNA + 1
+                
+                    ActiveCell.Offset(0, 1).Select
+                    
+                       
+            Loop
+            
+            CONTAR_COLUNA_ANO = cont_COLUNA
+            
+            
+    ElseIf ANO = "ANO_FIM" And PLAN = "ARRECADAÇÃO" Then
+    
+            Do Until ActiveCell.Offset(-13, 0).Value = NOVOS_GRAFICOS.Range("M2").Value
+            
+                    cont_COLUNA = cont_COLUNA + 1
+                
+                    ActiveCell.Offset(0, 1).Select
+                    
+                       
+            Loop
+            
+            CONTAR_COLUNA_ANO = cont_COLUNA
+            
+
+    End If
+
+
+End Function
